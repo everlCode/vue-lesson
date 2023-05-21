@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const postModule = {
     state: () => ({
         posts: [],
@@ -15,10 +17,10 @@ export const postModule = {
     }),
     getters: {
         sortedPosts(state) {
-            console.log([...state.posts]);
+            
             return [...state.posts].sort((a, b) => {
 
-                let value = typeof (a[state.selectedSort]) === 'string' ? a[state.selectedSort].localeCompare(b[state.selectedSort]) : a[state.selectedSort] > b[state.selectedSort]
+                return typeof (a[state.selectedSort]) === 'string' ? a[state.selectedSort].localeCompare(b[state.selectedSort]) : a[state.selectedSort] > b[state.selectedSort]
             })
         },
         sortedAndSearchedPosts(state, getters) {
@@ -67,7 +69,7 @@ export const postModule = {
                console.log(e)
             }
         },
-        async loadMorePosts() {
+        async loadMorePosts({state, commit}) {
             try {
                 commit('setPage', state.page + 1)
                 const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
@@ -78,7 +80,7 @@ export const postModule = {
                 })
                 commit('setTotalPages', Math.ceil(response.headers['x-total-count'] / state.limit));
 
-                commit('setposts', [...state.posts, ...response.data]);
+                commit('setPosts', [...state.posts, ...response.data]);
 
             } catch (e) {
                 console.log(e)

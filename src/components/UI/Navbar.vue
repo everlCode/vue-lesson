@@ -5,6 +5,7 @@
             <MyButton @click="$router.push('/posts')">Posts</MyButton>
             <MyButton @click="$router.push('/about')" style="margin-left: 20px;">About</MyButton>
             <MyButton @click="$router.push('/store')" style="margin-left: 20px;">Store</MyButton>
+            <MyButton @click="$router.push('/api')" style="margin-left: 20px;">Api</MyButton>
         </div>
     </div>
 </template>

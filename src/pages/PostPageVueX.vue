@@ -2,16 +2,16 @@
     <div>
 
         <h1>Post list</h1>
-        <!-- <MyInput v-model="searchQuery" placeholder="Search..." />
+        <MyInput :model-value="searchQuery" @update:model-value="setSearchQuery" placeholder="Search..." />
         <div class="appButtons">
             <MyButton @click="showDialog">
                 Create post</MyButton>
-            <MySelect v-model="selectedSort" :options="sortOptions"></MySelect>
+            <MySelect :model-value="selectedSort" @update:model-value="setSelectedSort" :options="sortOptions"></MySelect>
         </div>
 
         <MyDialog v-model:show="dialogVisible">
             <post-form @create="createPost" />
-        </MyDialog> -->
+        </MyDialog>
        
         <post-list @remove="removePost" :posts="sortedAndSearchedPosts" v-if="!isPostsLoading" />
         <div v-else> Loading...</div>
@@ -29,7 +29,6 @@
 <script>
 import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
-import axios from "axios"
 import MyButton from "@/components/UI/MyButton.vue";
 import MyInput from "@/components/UI/MyInput.vue";
 import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
@@ -48,7 +47,9 @@ export default {
     },
     methods: {
         ...mapMutations({
-            setPage: 'post/setPage'
+            setPage: 'post/setPage',
+            setSearchQuery: 'post/setSearchQuery',
+            setSelectedSort: 'post/setSelectedSort',
         }),
         ...mapActions({
             loadMorePosts: 'post/loadMorePosts',
@@ -64,16 +65,9 @@ export default {
         showDialog() {
             this.dialogVisible = true;
         },
-        // changePage(pageNumber) {
-        //     this.page = pageNumber;
-
-        //     this.fetchPosts();
-        // },
-
-
     },
     mounted() {
-        // this.fetchPosts();
+        this.fetchPosts();
     },
     computed: {
     ...mapState({
@@ -91,12 +85,6 @@ export default {
       sortedAndSearchedPosts: 'post/sortedAndSearchedPosts'
     })
   },
-    // watch: {
-    //     page() {
-    //         this.fetchPosts();
-    //     }
-    // }
-
 }
 </script>
 
